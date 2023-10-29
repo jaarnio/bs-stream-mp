@@ -1,7 +1,22 @@
-// Initialize Video.js
+// Include the HLS plugin
+videojs.registerPlugin("videoJsHls", function () {
+  var player = this;
+  videojs.log("HLS plugin loaded!");
+
+  // Set up HLS tech and options
+  var hlsTech = new videojs.Hls();
+  player.ready(function () {
+    player.tech(hlsTech, player.options_);
+  });
+});
+
+// Initialize Video.js with the HLS plugin
 const videojsOptions = {
-  autoplay: true, // Autoplay
-  controls: false, // Remove controls
+  autoplay: true,
+  controls: false,
+  plugins: {
+    videoJsHls: true, // Enable the HLS plugin
+  },
   sources: [
     {
       src: "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
@@ -11,11 +26,9 @@ const videojsOptions = {
 };
 
 const player = videojs("my-video", videojsOptions, function () {
-  // Video.js player setup complete
   this.on("error", handleVideoError);
   this.on("play", handlePlay);
 });
-var tech = player.getTech({ IWillNotUseThisInPlugins: true });
 
 // Variables for tracking stream health
 let lastReceivedPackets = 0;
@@ -37,18 +50,15 @@ function handleVideoError(error) {
 }
 
 function checkStreamHealth() {
-  const currentReceivedPackets = player.tech().hls.stats.mediaBytesReceived;
+  if (player.techName_ === "Html5" && player.tech_.hls) {
+    const currentReceivedPackets = player.tech_.hls.stats.mediaBytesReceived;
 
-  if (currentReceivedPackets === lastReceivedPackets) {
-    // No new packets received, indicating a problem with the stream
-    console.log("Stream health issue detected. Attempting to reconnect...");
-    handleVideoError();
+    if (currentReceivedPackets === lastReceivedPackets) {
+      // No new packets received, indicating a problem with the stream
+      console.log("Stream health issue detected. Attempting to reconnect...");
+      handleVideoError();
+    }
+
+    lastReceivedPackets = currentReceivedPackets;
   }
-
-  lastReceivedPackets = currentReceivedPackets;
 }
-
-// Ensure stream health check starts when the player is ready
-player.ready(function () {
-  handlePlay();
-});
