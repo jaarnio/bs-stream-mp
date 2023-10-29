@@ -1,58 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Video Streaming Page</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.11.4/video.js"></script>
   </head>
-  <body
-    style="
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: black;
-    "
-  >
-    <video id="video" width="1280" height="720"></video>
-    <script>
-      if (Hls.isSupported()) {
-        const video = document.getElementById("video");
-        const hls = new Hls({
-          lowLatencyMode: true,
-        });
-
-        hls.on(Hls.Events.ERROR, function (event, data) {
-          if (data.fatal) {
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                console.log("Network error occurred. Retrying...");
-                hls.startLoad();
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
-                console.log("Media error occurred. Retrying...");
-                hls.recoverMediaError();
-                break;
-              default:
-                console.log(`Error type: ${data.type}`);
-                break;
-            }
-          }
-        });
-
-        hls.loadSource("https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8");
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          video.play();
-        });
-      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        video.src = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8";
-        video.addEventListener("error", function () {
-          console.log("Media error occurred. Retrying...");
-          video.load();
-        });
-        video.autoplay = true;
-      }
-    </script>
+  <body>
+    <div
+      id="video-container"
+      style="
+        width: 1920px;
+        height: 1080px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <video id="my-video" class="video-js" style="width: 1280px; height: 720px"></video>
+    </div>
+    <script src="app.js"></script>
   </body>
 </html>
