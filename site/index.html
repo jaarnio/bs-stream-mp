@@ -18,7 +18,9 @@
     <script>
       if (Hls.isSupported()) {
         const video = document.getElementById("video");
-        const hls = new Hls();
+        const hls = new Hls({
+          lowLatencyMode: true,
+        });
 
         hls.on(Hls.Events.ERROR, function (event, data) {
           if (data.fatal) {
