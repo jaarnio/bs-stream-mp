@@ -497,7 +497,7 @@
         }
       },
       "wssDeviceSpec": {},
-      "lastModifiedTime": "2023-10-29T05:05:06.491Z"
+      "lastModifiedTime": "2023-10-29T22:31:32.847Z"
     },
     "zones": {
       "zonesById": {
@@ -722,14 +722,14 @@
       "566de0bc-755b-4000-abec-74a2467de000": {
         "id": "566de0bc-755b-4000-abec-74a2467de000",
         "name": "index.html",
-        "path": "P:\\BrightSign\\BrightSign Dev\\bs-stream-mp\\site\\",
+        "path": "/Users/johnaarnio/Downloads/bs-stream-mp/bs-stream-mp/site/",
         "networkId": 0,
         "location": "Local",
         "assetType": "HtmlSite",
-        "scope": "9560ed3374e2cc1c",
-        "locator": "file://\\P:\\BrightSign\\BrightSign Dev\\bs-stream-mp\\site\\index.html",
-        "fileSize": 1782,
-        "lastModifiedDate": "2023-10-29T05:02:59.629Z",
+        "scope": "a04aa10dc234825d",
+        "locator": "file:///Users/johnaarnio/Downloads/bs-stream-mp/bs-stream-mp/site/index.html",
+        "fileSize": 548,
+        "lastModifiedDate": "2023-10-29T22:27:13.477Z",
         "refCount": 1
       }
     },

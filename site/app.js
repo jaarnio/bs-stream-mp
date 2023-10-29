@@ -15,6 +15,7 @@ const player = videojs("my-video", videojsOptions, function () {
   this.on("error", handleVideoError);
   this.on("play", handlePlay);
 });
+var tech = player.getTech({ IWillNotUseThisInPlugins: true });
 
 // Variables for tracking stream health
 let lastReceivedPackets = 0;
