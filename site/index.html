@@ -25,12 +25,10 @@
       id="my-player"
       class="video-js vjs-default-skin"
       preload="auto"
-      width="1280"
-      height="720"
       autoplay
       hwz="z-index:-2"
     >
-      <source src="http://192.168.30.104/1920.m3u8" type="application/x-mpegURL" />
+      <source src="" type="application/x-mpegURL" />
       <!-- You can add more source elements for different video formats -->
     </video>
 
@@ -40,56 +38,54 @@
     ></div>
 
     <script>
+      // Use this stream URL
+      const streamURL = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8";
+
       // Initialize the Video.js player
-      var player = videojs("my-player", {});
+      var player = videojs("my-player", { fluid: true });
 
-      player.errors();
+      // testing errors plugin
+      //player.errors();
 
-      videojs.hook("error", function (player, err) {
-        console.log(
-          `player ${player.id()} has errored out with code ${err.code} ${err.message}`
-        );
-      });
-
-      // Add buffer and reconnect handling (example: attempt to reconnect every 10 seconds)
-      /*       player.on("waiting", function () {
-        console.log("Waiting...");
-        setTimeout(function () {
-          player.src("http://192.168.30.104/1920.m3u8");
-        }, 10000); // Reconnect every 10 seconds
-      });
- */
       player.on("waiting", () => {
-        console.log("Waiting..."); //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
+        console.log("Waiting...");
+        //player.src(streamURL);
+      });
+      player.on("paused", () => {
+        console.log("Stream paused, reloading...");
+        player.load(streamURL);
+      });
+      player.on("ended", () => {
+        console.log("Stream ended, reloading...");
+        player.load(streamURL);
+      });
+      player.on("error", () => {
+        console.log("Error...");
+        //player.src(streamURL);
       });
 
       player.reloadSourceOnError({
         // getSource allows you to override the source object used when an error occurs
         getSource: function (reload) {
           console.log("Reloading because of an error");
-
-          // call reload() with a fresh source object
-          // you can do this step asynchronously if you want (but the error dialog will
-          // show up while you're waiting)
           reload({
-            src: "http://192.168.30.104/1920.m3u8",
+            src: streamURL,
             type: "application/x-mpegURL",
           });
         },
-
         // errorInterval specifies the minimum amount of seconds that must pass before
         // another reload will be attempted
         errorInterval: 2,
       });
 
       // Handle stream errors
-      player.on("error", function () {
+      /*       player.on("error", function () {
         var errorMessage =
           "There was an issue with the stream. Please check your connection or try again later.";
         var errorElement = document.getElementById("error-message");
         errorElement.textContent = errorMessage;
         errorElement.style.display = "block";
-      });
+      }); */
     </script>
   </body>
 </html>
