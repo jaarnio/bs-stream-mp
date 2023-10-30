@@ -497,7 +497,7 @@
         }
       },
       "wssDeviceSpec": {},
-      "lastModifiedTime": "2023-10-29T22:31:32.847Z"
+      "lastModifiedTime": "2023-10-30T16:33:10.919Z"
     },
     "zones": {
       "zonesById": {
@@ -722,14 +722,14 @@
       "566de0bc-755b-4000-abec-74a2467de000": {
         "id": "566de0bc-755b-4000-abec-74a2467de000",
         "name": "index.html",
-        "path": "/Users/johnaarnio/Downloads/bs-stream-mp/bs-stream-mp/site/",
+        "path": "P:\\BrightSign\\BrightSign Dev\\bs-stream-mp\\site\\",
         "networkId": 0,
         "location": "Local",
         "assetType": "HtmlSite",
-        "scope": "a04aa10dc234825d",
-        "locator": "file:///Users/johnaarnio/Downloads/bs-stream-mp/bs-stream-mp/site/index.html",
-        "fileSize": 548,
-        "lastModifiedDate": "2023-10-29T22:27:13.477Z",
+        "scope": "9560ed3374e2cc1c",
+        "locator": "file://\\P:\\BrightSign\\BrightSign Dev\\bs-stream-mp\\site\\index.html",
+        "fileSize": 1869,
+        "lastModifiedDate": "2023-10-30T14:34:18.174Z",
         "refCount": 1
       }
     },
@@ -750,8 +750,22 @@
       "type": "ZONE",
       "selectableType": "ZONE"
     },
-    "selectionEntities": {},
-    "prevSelectionEntities": {},
+    "selectionEntities": {
+      "554d7524-1669-4000-a70c-91465bbaf000": {
+        "id": "554d7524-1669-4000-a70c-91465bbaf000",
+        "type": "Html",
+        "selectableType": "STATE",
+        "selectableData": null
+      }
+    },
+    "prevSelectionEntities": {
+      "554d7524-1669-4000-a70c-91465bbaf000": {
+        "id": "554d7524-1669-4000-a70c-91465bbaf000",
+        "type": "Html",
+        "selectableType": "STATE",
+        "selectableData": null
+      }
+    },
     "isEventAdvancedEnabled": false,
     "activeAssetMenuTab": "ASSETS"
   },

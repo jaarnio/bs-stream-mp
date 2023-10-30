@@ -1,23 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
-    <script src="https://vjs.zencdn.net/7.11.4/video.js"></script>
-    <script src="https://unpkg.com/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.js"></script>
+    <meta charset="UTF-8" />
+    <title>Live Stream Player</title>
+
+    <!-- Include Video.js library -->
+    <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.14.3/video.js"></script>
+    <script src="videojs-errors.js"></script>
+    <link href="videojs-errors.css" rel="stylesheet" />
   </head>
-  <body>
-    <div
-      id="video-container"
-      style="
-        width: 1920px;
-        height: 1080px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      "
+  <body
+    style="
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    "
+  >
+    <!-- Video.js player -->
+    <video
+      id="my-player"
+      class="video-js vjs-default-skin"
+      preload="auto"
+      width="1280"
+      height="720"
+      autoplay
+      hwz="z-index:-2"
     >
-      <video id="my-video" class="video-js" style="width: 1280px; height: 720px"></video>
-    </div>
-    <script src="app.js"></script>
+      <source src="http://192.168.30.104/1920.m3u8" type="application/x-mpegURL" />
+      <!-- You can add more source elements for different video formats -->
+    </video>
+
+    <div
+      id="error-message"
+      style="position: absolute; top: 10px; left: 10px; color: red; display: none"
+    ></div>
+
+    <script>
+      // Initialize the Video.js player
+      var player = videojs("my-player", {});
+
+      player.errors();
+
+      videojs.hook("error", function (player, err) {
+        console.log(
+          `player ${player.id()} has errored out with code ${err.code} ${err.message}`
+        );
+      });
+
+      // Add buffer and reconnect handling (example: attempt to reconnect every 10 seconds)
+      /*       player.on("waiting", function () {
+        console.log("Waiting...");
+        setTimeout(function () {
+          player.src("http://192.168.30.104/1920.m3u8");
+        }, 10000); // Reconnect every 10 seconds
+      });
+ */
+      player.on("waiting", () => {
+        console.log("Waiting..."); //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
+      });
+
+      player.reloadSourceOnError({
+        // getSource allows you to override the source object used when an error occurs
+        getSource: function (reload) {
+          console.log("Reloading because of an error");
+
+          // call reload() with a fresh source object
+          // you can do this step asynchronously if you want (but the error dialog will
+          // show up while you're waiting)
+          reload({
+            src: "http://192.168.30.104/1920.m3u8",
+            type: "application/x-mpegURL",
+          });
+        },
+
+        // errorInterval specifies the minimum amount of seconds that must pass before
+        // another reload will be attempted
+        errorInterval: 2,
+      });
+
+      // Handle stream errors
+      player.on("error", function () {
+        var errorMessage =
+          "There was an issue with the stream. Please check your connection or try again later.";
+        var errorElement = document.getElementById("error-message");
+        errorElement.textContent = errorMessage;
+        errorElement.style.display = "block";
+      });
+    </script>
   </body>
 </html>

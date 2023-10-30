@@ -44,7 +44,7 @@ function handleVideoError(error) {
 
   // Attempt to reconnect
   player.src({
-    src: "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
+    src: "http://192.168.30.104/1920.m3u8",
     type: "application/x-mpegURL",
   });
 }
