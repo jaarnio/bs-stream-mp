@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         errorInterval: 5,
       });
+      player.on("timeupdate", function () {
+        //console.log("Time update");
+      });
       player.on("ratechange", function () {
         console.log("Rate change");
       });
