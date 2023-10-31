@@ -39,29 +39,47 @@
 
     <script>
       // Use this stream URL
-      const streamURL = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8";
+      //"http://192.168.30.104/1920.m3u8";
+      //"https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+      const streamURL = "http://192.168.30.104/1920.m3u8";
+      var waitingRetry = 0;
 
       // Initialize the Video.js player
-      var player = videojs("my-player", { fluid: true });
+      var player = videojs("my-player", { fluid: true, liveui: true });
 
       // testing errors plugin
-      //player.errors();
+      player.errors();
+      player.errors.timeout(1000);
 
+      player.on("playing", () => {
+        console.log("Playing...");
+        waitingRetry = 0;
+      });
+      player.on("stalled", () => {
+        console.log("Stalled...");
+      });
+      player.on("Abort...", () => {
+        console.log("Abort...");
+      });
       player.on("waiting", () => {
         console.log("Waiting...");
-        //player.src(streamURL);
+        waitingRetry++;
+        if (waitingRetry > 12) {
+          console.log("Stream stuck, reloading...");
+          reloadStream();
+        }
       });
       player.on("paused", () => {
         console.log("Stream paused, reloading...");
-        player.load(streamURL);
+        reloadStream();
       });
       player.on("ended", () => {
         console.log("Stream ended, reloading...");
-        player.load(streamURL);
+        reloadStream();
       });
       player.on("error", () => {
         console.log("Error...");
-        //player.src(streamURL);
+        reloadStream();
       });
 
       player.reloadSourceOnError({
@@ -77,6 +95,15 @@
         // another reload will be attempted
         errorInterval: 2,
       });
+
+      function reloadStream() {
+        player.src({
+          src: streamURL,
+          type: "application/x-mpegURL",
+        });
+        player.load();
+        player.play();
+      }
     </script>
   </body>
 </html>
