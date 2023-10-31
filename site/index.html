@@ -9,6 +9,7 @@
     <script src="https://vjs.zencdn.net/7.14.3/video.js"></script>
     <script src="videojs-errors.js"></script>
     <link href="videojs-errors.css" rel="stylesheet" />
+    <script src="app.js"></script>
   </head>
   <body
     style="
@@ -16,94 +17,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      width: 1920px;
+      height: 1080px;
       margin: 0;
     "
   >
     <!-- Video.js player -->
     <video
-      id="my-player"
+      id="my-video"
       class="video-js vjs-default-skin"
       preload="auto"
-      autoplay
-      hwz="z-index:-2"
+      height="1080px"
+      width="1920px"
     >
       <source src="" type="application/x-mpegURL" />
       <!-- You can add more source elements for different video formats -->
     </video>
-
-    <div
-      id="error-message"
-      style="position: absolute; top: 10px; left: 10px; color: red; display: none"
-    ></div>
-
-    <script>
-      // Use this stream URL
-      //"http://192.168.30.104/1920.m3u8";
-      //"https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
-      const streamURL = "http://192.168.30.104/1920.m3u8";
-      var waitingRetry = 0;
-
-      // Initialize the Video.js player
-      var player = videojs("my-player", { fluid: true, liveui: true });
-
-      // testing errors plugin
-      player.errors();
-      player.errors.timeout(1000);
-
-      player.on("playing", () => {
-        console.log("Playing...");
-        waitingRetry = 0;
-      });
-      player.on("stalled", () => {
-        console.log("Stalled...");
-      });
-      player.on("Abort...", () => {
-        console.log("Abort...");
-      });
-      player.on("waiting", () => {
-        console.log("Waiting...");
-        waitingRetry++;
-        if (waitingRetry > 12) {
-          console.log("Stream stuck, reloading...");
-          reloadStream();
-        }
-      });
-      player.on("paused", () => {
-        console.log("Stream paused, reloading...");
-        reloadStream();
-      });
-      player.on("ended", () => {
-        console.log("Stream ended, reloading...");
-        reloadStream();
-      });
-      player.on("error", () => {
-        console.log("Error...");
-        reloadStream();
-      });
-
-      player.reloadSourceOnError({
-        // getSource allows you to override the source object used when an error occurs
-        getSource: function (reload) {
-          console.log("Reloading because of an error");
-          reload({
-            src: streamURL,
-            type: "application/x-mpegURL",
-          });
-        },
-        // errorInterval specifies the minimum amount of seconds that must pass before
-        // another reload will be attempted
-        errorInterval: 2,
-      });
-
-      function reloadStream() {
-        player.src({
-          src: streamURL,
-          type: "application/x-mpegURL",
-        });
-        player.load();
-        player.play();
-      }
-    </script>
   </body>
 </html>
